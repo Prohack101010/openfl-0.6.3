@@ -5,8 +5,7 @@ package openfl.events;
 	The EventPhase class provides values for the `eventPhase`
 	property of the Event class.
 **/
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract EventPhase(Int) from Int to Int from UInt to UInt
-
+@:enum abstract EventPhase(Int) from Int to Int from UInt to UInt
 {
 	/**
 		The target phase, which is the second phase of the event flow.

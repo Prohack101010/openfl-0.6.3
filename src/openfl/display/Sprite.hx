@@ -4,8 +4,6 @@ package openfl.display;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
 import openfl.ui.MouseCursor;
-import openfl.utils._internal.Log;
-import openfl.utils.AssetLibrary;
 
 /**
 	The Sprite class is a basic display list building block: a display list
@@ -29,13 +27,8 @@ import openfl.utils.AssetLibrary;
 @:access(openfl.display.Stage)
 @:access(openfl.geom.Matrix)
 @:access(openfl.geom.Point)
-#if !macro
-@:autoBuild(openfl.utils._internal.AssetsMacro.initBinding())
-#end
 class Sprite extends DisplayObjectContainer
 {
-	@:noCompletion private static var __constructor:Sprite->Void;
-
 	/**
 		Specifies the button mode of this sprite. If `true`, this
 		sprite behaves as a button, which means that it triggers the display of
@@ -128,8 +121,6 @@ class Sprite extends DisplayObjectContainer
 	public var useHandCursor:Bool;
 
 	@:noCompletion private var __buttonMode:Bool;
-	@:noCompletion private var __pendingBindClassName:String;
-	@:noCompletion private var __pendingBindLibrary:AssetLibrary;
 
 	#if openfljs
 	@:noCompletion private static function __init__()
@@ -157,34 +148,6 @@ class Sprite extends DisplayObjectContainer
 		__drawableType = SPRITE;
 		__buttonMode = false;
 		useHandCursor = true;
-
-		if (__pendingBindLibrary != null)
-		{
-			var library = __pendingBindLibrary;
-			var className = __pendingBindClassName;
-			__pendingBindLibrary = null;
-			__pendingBindClassName = null;
-			library.bind(className, this);
-		}
-		else if (__constructor != null)
-		{
-			var method = __constructor;
-			__constructor = null;
-			method(this);
-		}
-	}
-
-	/**
-		Creates a new Sprite based upon the first frame of a Timeline instance.
-
-		@param timeline A Timeline object
-		@return A new Sprite
-	**/
-	public static function fromTimeline(timeline:Timeline):Sprite
-	{
-		var sprite = new Sprite();
-		timeline.initializeSprite(sprite);
-		return sprite;
 	}
 
 	/**
@@ -256,15 +219,6 @@ class Sprite extends DisplayObjectContainer
 		}
 	}
 
-	@:noCompletion private override function __setStageReference(stage:Stage):Void
-	{
-		if (this.stage != stage && this.stage != null && this.stage.__dragObject == this)
-		{
-			stopDrag();
-		}
-		super.__setStageReference(stage);
-	}
-
 	#if false
 	/**
 		Ends the `startTouchDrag()` method, for use with touch-enabled
@@ -278,19 +232,6 @@ class Sprite extends DisplayObjectContainer
 	**/
 	// @:noCompletion @:dox(hide) public function stopTouchDrag (touchPointID:Int):Void;
 	#end
-	@:noCompletion private function __bind(library:AssetLibrary, className:String):Void
-	{
-		if (__worldTransform == null) // super() has not been called
-		{
-			__pendingBindLibrary = library;
-			__pendingBindClassName = className;
-		}
-		else if (library == null || className == null || !library.bind(className, this))
-		{
-			Log.error("Cannot bind class name \"" + className + "\"");
-		}
-	}
-
 	@:noCompletion private override function __getCursor():MouseCursor
 	{
 		return (__buttonMode && useHandCursor) ? BUTTON : null;

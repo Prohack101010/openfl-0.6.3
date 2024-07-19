@@ -1,6 +1,5 @@
 package openfl.display._internal;
 
-#if !flash
 import openfl.display.BitmapData;
 import openfl.display.BlendMode;
 import openfl.display.CanvasRenderer;
@@ -139,7 +138,7 @@ class CanvasTilemap
 				}
 
 				bitmapData = tileset.__bitmapData;
-				if (bitmapData == null || bitmapData.image == null) continue;
+				if (bitmapData == null) continue;
 
 				if (bitmapData != cacheBitmapData)
 				{
@@ -187,4 +186,3 @@ class CanvasTilemap
 
 	public static function renderDrawableMask(tilemap:Tilemap, renderer:CanvasRenderer):Void {}
 }
-#end

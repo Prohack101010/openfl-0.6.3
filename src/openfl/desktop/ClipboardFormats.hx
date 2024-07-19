@@ -8,8 +8,7 @@ package openfl.desktop;
 	data formats used with the Clipboard class. Flash Player 10 only supports
 	TEXT_FORMAT, RICH_TEXT_FORMAT, and HTML_FORMAT.
 **/
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract ClipboardFormats(Null<Int>)
-
+@:enum abstract ClipboardFormats(Null<Int>)
 {
 	/**
 		HTML data.
@@ -50,8 +49,7 @@ package openfl.desktop;
 }
 #else
 @SuppressWarnings("checkstyle:FieldDocComment")
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract ClipboardFormats(String) from String to String
-
+@:enum abstract ClipboardFormats(String) from String to String
 {
 	public var HTML_FORMAT = "air:html";
 	public var RICH_TEXT_FORMAT = "air:rtf";

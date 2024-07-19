@@ -16,16 +16,14 @@ class LoaderContextTest extends Test
 		Assert.notEquals(exists, null);
 	}
 
-	#if flash
-	@Ignored
-	#end
 	public function test_allowLoadBytesCodeExecution()
 	{
-		// not available in Linux Flash Player
+		#if !flash // not available in Linux Flash Player
 		// TODO: Confirm functionality
 		var loaderContext = new LoaderContext();
 		var exists = loaderContext.allowLoadBytesCodeExecution;
 		Assert.notEquals(exists, null);
+		#end
 	}
 
 	public function test_applicationDomain()

@@ -1,6 +1,5 @@
 package openfl.display._internal;
 
-#if !flash
 import openfl.display.BitmapData;
 import openfl.display.CanvasRenderer;
 import openfl.display.CapsStyle;
@@ -19,7 +18,6 @@ import lime._internal.graphics.ImageCanvasUtil; // TODO
 #end
 #if (js && html5)
 import js.html.CanvasElement;
-import js.html.CanvasGradient;
 import js.html.CanvasPattern;
 import js.html.CanvasRenderingContext2D;
 import js.html.CanvasWindingRule;
@@ -103,13 +101,13 @@ class CanvasGraphics
 	}
 
 	@SuppressWarnings("checkstyle:Dynamic")
-	private static function createGradientPattern(type:GradientType, colors:Array<Int>, alphas:Array<Float>, ratios:Array<Int>, matrix:Matrix,
+	private static function createGradientPattern(type:GradientType, colors:Array<Dynamic>, alphas:Array<Dynamic>, ratios:Array<Dynamic>, matrix:Matrix,
 			spreadMethod:SpreadMethod, interpolationMethod:InterpolationMethod, focalPointRatio:Float):#if (js && html5) CanvasPattern #else Void #end
 	{
 		#if (js && html5)
-		var gradientFill:CanvasGradient = null,
-			point:Point = null,
-			point2:Point = null,
+		var gradientFill = null,
+			point = null,
+			point2 = null,
 			releaseMatrix = false;
 
 		if (matrix == null)
@@ -138,7 +136,7 @@ class CanvasGraphics
 				inversePendingMatrix.invert();
 		}
 
-		var rgb:Int, alpha:Float, r:Float, g:Float, b:Float, ratio:Float;
+		var rgb, alpha, r, g, b, ratio;
 
 		for (i in 0...colors.length)
 		{
@@ -248,7 +246,6 @@ class CanvasGraphics
 
 		if (graphics.__commands.length == 0 || bounds == null || bounds.width <= 0 || bounds.height <= 0)
 		{
-			CanvasGraphics.graphics = null;
 			return false;
 		}
 		else
@@ -332,7 +329,6 @@ class CanvasGraphics
 							data.destroy();
 							graphics.__canvas = cacheCanvas;
 							graphics.__context = cacheContext;
-							CanvasGraphics.graphics = null;
 							return true;
 						}
 
@@ -343,7 +339,6 @@ class CanvasGraphics
 							data.destroy();
 							graphics.__canvas = cacheCanvas;
 							graphics.__context = cacheContext;
-							CanvasGraphics.graphics = null;
 							return true;
 						}
 
@@ -358,7 +353,6 @@ class CanvasGraphics
 							data.destroy();
 							graphics.__canvas = cacheCanvas;
 							graphics.__context = cacheContext;
-							CanvasGraphics.graphics = null;
 							return true;
 						}
 
@@ -369,7 +363,6 @@ class CanvasGraphics
 							data.destroy();
 							graphics.__canvas = cacheCanvas;
 							graphics.__context = cacheContext;
-							CanvasGraphics.graphics = null;
 							return true;
 						}
 
@@ -457,7 +450,6 @@ class CanvasGraphics
 
 			graphics.__canvas = cacheCanvas;
 			graphics.__context = cacheContext;
-			CanvasGraphics.graphics = null;
 			return hitTest;
 		}
 		#end
@@ -688,7 +680,7 @@ class CanvasGraphics
 					var c = data.readLineGradientStyle();
 					if (stroke && hasStroke)
 					{
-						closePath(true);
+						closePath();
 					}
 
 					context.moveTo(positionX - offsetX, positionY - offsetY);
@@ -702,7 +694,7 @@ class CanvasGraphics
 					var c = data.readLineBitmapStyle();
 					if (stroke && hasStroke)
 					{
-						closePath(true);
+						closePath();
 					}
 
 					context.moveTo(positionX - offsetX, positionY - offsetY);
@@ -1071,7 +1063,8 @@ class CanvasGraphics
 						if (canOptimizeMatrix && st >= 0 && sl >= 0 && sr <= bitmapFill.width && sb <= bitmapFill.height)
 						{
 							optimizationUsed = true;
-							if (!hitTesting) context.drawImage(bitmapFill.image.src, sl, st, sr - sl, sb - st, c.x - offsetX, c.y - offsetY, c.width, c.height);
+							if (!hitTesting) context.drawImage(bitmapFill.image.src, sl, st, sr - sl, sb - st, c.x - offsetX, c.y - offsetY, c.width,
+								c.height);
 						}
 					}
 
@@ -1148,13 +1141,7 @@ class CanvasGraphics
 	public static function render(graphics:Graphics, renderer:CanvasRenderer):Void
 	{
 		#if (js && html5)
-		#if (openfl_disable_hdpi || openfl_disable_hdpi_graphics)
-		var pixelRatio = 1;
-		#else
-		var pixelRatio = renderer.__pixelRatio;
-		#end
-
-		graphics.__update(renderer.__worldTransform, pixelRatio);
+		graphics.__update(renderer.__worldTransform);
 
 		if (graphics.__softwareDirty)
 		{
@@ -1186,7 +1173,7 @@ class CanvasGraphics
 				var transform = graphics.__renderTransform;
 				var canvas = graphics.__canvas;
 
-				var scale = renderer.__pixelRatio;
+				var scale = renderer.pixelRatio;
 				var scaledWidth = Std.int(width * scale);
 				var scaledHeight = Std.int(height * scale);
 
@@ -1466,7 +1453,6 @@ class CanvasGraphics
 
 			graphics.__softwareDirty = false;
 			graphics.__dirty = false;
-			CanvasGraphics.graphics = null;
 		}
 		#end
 	}
@@ -1596,4 +1582,3 @@ private typedef NormalizedUVT =
 	max:Float,
 	uvt:Vector<Float>
 }
-#end

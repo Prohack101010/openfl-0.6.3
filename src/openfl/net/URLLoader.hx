@@ -284,9 +284,6 @@ class URLLoader extends EventDispatcher
 	public function load(request:URLRequest):Void
 	{
 		#if (lime && !macro)
-		var openEvent:Event = new Event(Event.OPEN);
-		dispatchEvent(openEvent);
-
 		if (dataFormat == BINARY)
 		{
 			var httpRequest = new HTTPRequest<ByteArray>();
@@ -297,7 +294,6 @@ class URLLoader extends EventDispatcher
 				.onError(httpRequest_onError)
 				.onComplete(function(data:ByteArray):Void
 				{
-					__dispatchResponseStatus();
 					__dispatchStatus();
 					this.data = data;
 
@@ -315,7 +311,6 @@ class URLLoader extends EventDispatcher
 				.onError(httpRequest_onError)
 				.onComplete(function(data:String):Void
 				{
-					__dispatchResponseStatus();
 					__dispatchStatus();
 					this.data = data;
 
@@ -326,12 +321,13 @@ class URLLoader extends EventDispatcher
 		#end
 	}
 
-	@:noCompletion private function __dispatchResponseStatus():Void
+	@:noCompletion private function __dispatchStatus():Void
 	{
-		var responseStatusEvent = new HTTPStatusEvent(HTTPStatusEvent.HTTP_RESPONSE_STATUS, false, false, __httpRequest.responseStatus);
-		responseStatusEvent.responseURL = __httpRequest.uri;
+		var event = new HTTPStatusEvent(HTTPStatusEvent.HTTP_STATUS, false, false, __httpRequest.responseStatus);
+		event.responseURL = __httpRequest.uri;
 
 		var headers = new Array<URLRequestHeader>();
+
 		#if (lime && !display && !macro && !doc_gen)
 		if (__httpRequest.enableResponseHeaders && __httpRequest.responseHeaders != null)
 		{
@@ -341,14 +337,9 @@ class URLLoader extends EventDispatcher
 			}
 		}
 		#end
-		responseStatusEvent.responseHeaders = headers;
-		dispatchEvent(responseStatusEvent);
-	}
 
-	@:noCompletion private function __dispatchStatus():Void
-	{
-		var statusEvent = new HTTPStatusEvent(HTTPStatusEvent.HTTP_STATUS, false, false, __httpRequest.responseStatus);
-		dispatchEvent(statusEvent);
+		event.responseHeaders = headers;
+		dispatchEvent(event);
 	}
 
 	@:noCompletion private function __prepareRequest(httpRequest:#if (!lime || display || macro || doc_gen) Dynamic #else _IHTTPRequest #end,
@@ -392,9 +383,7 @@ class URLLoader extends EventDispatcher
 
 		__httpRequest.followRedirects = request.followRedirects;
 		__httpRequest.timeout = Std.int(request.idleTimeout);
-		#if (lime >= "8.0.0")
-		__httpRequest.manageCookies = request.manageCookies;
-		#end
+		__httpRequest.withCredentials = request.manageCookies;
 
 		// TODO: Better user agent?
 		var userAgent = request.userAgent;
@@ -408,24 +397,8 @@ class URLLoader extends EventDispatcher
 	// Event Handlers
 	@:noCompletion private function httpRequest_onError(error:Dynamic):Void
 	{
-		__dispatchResponseStatus();
 		__dispatchStatus();
 
-		#if (lime && !doc_gen)
-		// some targets won't allow us to cast to HTTPRequest<Dynamic>
-		if (#if (haxe_ver >= 4.2) Std.isOfType #else Std.is #end (__httpRequest, _HTTPRequest_Bytes))
-		{
-			var bytesRequest:_HTTPRequest_Bytes<Bytes> = cast __httpRequest;
-			data = bytesRequest.responseData;
-		}
-		else if (#if (haxe_ver >= 4.2) Std.isOfType #else Std.is #end (__httpRequest, _HTTPRequest_String))
-		{
-			var stringRequest:_HTTPRequest_String<String> = cast __httpRequest;
-			data = stringRequest.responseData;
-		}
-		#end
-		#if !hl
-		// can't compare a string against an integer in HashLink
 		if (error == 403)
 		{
 			var event = new SecurityErrorEvent(SecurityErrorEvent.SECURITY_ERROR);
@@ -433,7 +406,6 @@ class URLLoader extends EventDispatcher
 			dispatchEvent(event);
 		}
 		else
-		#end
 		{
 			var event = new IOErrorEvent(IOErrorEvent.IO_ERROR);
 			event.text = Std.string(error);

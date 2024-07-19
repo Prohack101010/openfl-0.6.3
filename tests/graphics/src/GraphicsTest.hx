@@ -22,9 +22,6 @@ class GraphicsTest extends Test
 		Assert.notNull(graphics);
 	}
 
-	#if flash
-	@Ignored
-	#end
 	public function test_beginBitmapFill()
 	{
 		// TODO: Confirm functionality
@@ -38,9 +35,6 @@ class GraphicsTest extends Test
 		#end
 	}
 
-	#if flash
-	@Ignored
-	#end
 	public function test_beginFill()
 	{
 		// TODO: Confirm functionality
@@ -54,9 +48,7 @@ class GraphicsTest extends Test
 		#end
 	}
 
-	#if (flash || neko)
 	@Ignored
-	#end
 	public function test_beginGradientFill()
 	{
 		// TODO: Confirm functionality
@@ -116,9 +108,6 @@ class GraphicsTest extends Test
 		Assert.notNull(exists);
 	}
 
-	#if flash
-	@Ignored
-	#end
 	public function test_drawGraphicsData()
 	{
 		// TODO: Confirm functionality
@@ -196,9 +185,6 @@ class GraphicsTest extends Test
 		#end
 	}
 
-	#if flash
-	@Ignored
-	#end
 	public function test_endFill()
 	{
 		// TODO: Confirm functionality

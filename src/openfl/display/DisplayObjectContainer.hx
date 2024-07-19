@@ -194,12 +194,6 @@ class DisplayObjectContainer extends InteractiveObject
 			error.errorID = 2007;
 			throw error;
 		}
-		else if (child == this)
-		{
-			var error = new ArgumentError("Error #2024: An object cannot be added as a child of itself.");
-			error.errorID = 2024;
-			throw error;
-		}
 		#if ((haxe_ver >= "3.4.0") || !cpp)
 		else if (child.stage == child)
 		{
@@ -264,8 +258,7 @@ class DisplayObjectContainer extends InteractiveObject
 			if (addedToStage)
 			{
 				#if openfl_pool_events
-				event = Event.__pool.get();
-				event.type = Event.ADDED_TO_STAGE;
+				event = Event.__pool.get(Event.ADDED_TO_STAGE);
 				#else
 				event = new Event(Event.ADDED_TO_STAGE, false, false);
 				#end
@@ -980,7 +973,6 @@ class DisplayObjectContainer extends InteractiveObject
 	}
 
 	// Get & Set Methods
-
 	@:noCompletion private function get_numChildren():Int
 	{
 		return __children.length;

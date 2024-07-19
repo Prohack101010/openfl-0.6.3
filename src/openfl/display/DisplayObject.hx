@@ -337,11 +337,10 @@ class DisplayObject extends EventDispatcher implements IBitmapDrawable #if (open
 		`true`. The application uses this matrix as a transformation matrix that is applied when rendering the
 		bitmap version of the display object.
 
-		_Adobe AIR profile support:_ This feature is supported on mobile devices, but it is not supported on desktop
+		_AIR profile support:_ This feature is supported on mobile devices, but it is not supported on desktop
 		operating systems. It also has limited support on AIR for TV devices. Specifically, on AIR for TV devices,
-		supported transformations include scaling and translation, but not rotation and skewing. See
-		[AIR Profile Support](http://help.adobe.com/en_US/air/build/WS144092a96ffef7cc16ddeea2126bb46b82f-8000.html)
-		for more information regarding API support across multiple profiles.
+		supported transformations include scaling and translation, but not rotation and skewing. See AIR Profile
+		Support for more information regarding API support across multiple profiles.
 
 		With `cacheAsBitmapMatrix` set, the application retains a cached bitmap image across various 2D
 		transformations, including translation, rotation, and scaling. If the application uses hardware acceleration,
@@ -644,6 +643,7 @@ class DisplayObject extends EventDispatcher implements IBitmapDrawable #if (open
 	**/
 	// @:noCompletion @:dox(hide) @:require(flash10) public var rotationX:Float;
 	#end
+
 	#if false
 	/**
 		Indicates the y-axis rotation of the DisplayObject instance, in degrees, from its original orientation
@@ -653,6 +653,7 @@ class DisplayObject extends EventDispatcher implements IBitmapDrawable #if (open
 	**/
 	// @:noCompletion @:dox(hide) @:require(flash10) public var rotationY:Float;
 	#end
+
 	#if false
 	/**
 		Indicates the z-axis rotation of the DisplayObject instance, in degrees, from its original orientation
@@ -778,7 +779,7 @@ class DisplayObject extends EventDispatcher implements IBitmapDrawable #if (open
 		property of the `scrollRect` Rectangle object. You can scroll
 		an object up and down by setting the `y` property of the
 		`scrollRect` Rectangle object. If the display object is rotated
-		90° and you scroll it left and right, the display object actually scrolls
+		90� and you scroll it left and right, the display object actually scrolls
 		up and down.
 	**/
 	public var scrollRect(get, set):Rectangle;
@@ -869,9 +870,9 @@ class DisplayObject extends EventDispatcher implements IBitmapDrawable #if (open
 		to the local coordinates of the parent DisplayObjectContainer. If the
 		object is inside a DisplayObjectContainer that has transformations, it is
 		in the local coordinate system of the enclosing DisplayObjectContainer.
-		Thus, for a DisplayObjectContainer rotated 90° counterclockwise, the
+		Thus, for a DisplayObjectContainer rotated 90� counterclockwise, the
 		DisplayObjectContainer's children inherit a coordinate system that is
-		rotated 90° counterclockwise. The object's coordinates refer to the
+		rotated 90� counterclockwise. The object's coordinates refer to the
 		registration point position.
 	**/
 	@:keep public var x(get, set):Float;
@@ -881,9 +882,9 @@ class DisplayObject extends EventDispatcher implements IBitmapDrawable #if (open
 		to the local coordinates of the parent DisplayObjectContainer. If the
 		object is inside a DisplayObjectContainer that has transformations, it is
 		in the local coordinate system of the enclosing DisplayObjectContainer.
-		Thus, for a DisplayObjectContainer rotated 90° counterclockwise, the
+		Thus, for a DisplayObjectContainer rotated 90� counterclockwise, the
 		DisplayObjectContainer's children inherit a coordinate system that is
-		rotated 90° counterclockwise. The object's coordinates refer to the
+		rotated 90� counterclockwise. The object's coordinates refer to the
 		registration point position.
 	**/
 	@:keep public var y(get, set):Float;
@@ -1568,7 +1569,7 @@ class DisplayObject extends EventDispatcher implements IBitmapDrawable #if (open
 
 		if (transformDirty)
 		{
-			var list:Array<DisplayObject> = [];
+			var list = [];
 			var current = this;
 
 			if (parent == null)
@@ -1934,17 +1935,9 @@ class DisplayObject extends EventDispatcher implements IBitmapDrawable #if (open
 	{
 		if (value != null && value.length > 0)
 		{
-			var clonedFilters:Array<BitmapFilter> = [];
+			// TODO: Copy incoming array values
 
-			for (filter in value)
-			{
-				var clonedFilter:BitmapFilter = filter.clone();
-
-				clonedFilter.__renderDirty = true;
-				clonedFilters.push(clonedFilter);
-			}
-
-			__filters = clonedFilters;
+			__filters = value;
 			// __updateFilters = true;
 			__setRenderDirty();
 		}

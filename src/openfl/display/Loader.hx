@@ -388,9 +388,6 @@ class Loader extends DisplayObjectContainer
 	{
 		unload();
 
-		var openEvent:Event = new Event(Event.OPEN);
-		contentLoaderInfo.dispatchEvent(openEvent);
-
 		contentLoaderInfo.loaderURL = Lib.current.loaderInfo.url;
 		contentLoaderInfo.url = request.url;
 		__unloaded = false;

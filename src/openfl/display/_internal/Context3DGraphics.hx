@@ -1,6 +1,5 @@
 package openfl.display._internal;
 
-#if !flash
 import openfl.display._internal.CairoGraphics;
 import openfl.display._internal.CanvasGraphics;
 import openfl.display._internal.DrawCommandReader;
@@ -52,7 +51,7 @@ class Context3DGraphics
 		var tileRect = Rectangle.__pool.get();
 		var tileTransform = Matrix.__pool.get();
 
-		var bitmap:BitmapData = null;
+		var bitmap = null;
 
 		for (type in graphics.__commands.types)
 		{
@@ -480,20 +479,8 @@ class Context3DGraphics
 
 			// }
 
-			renderer.__softwareRenderer.__pixelRatio = renderer.__pixelRatio;
-
 			var cacheTransform = renderer.__softwareRenderer.__worldTransform;
-
-			// TODO: Embed high-DPI graphics logic in the software renderer?
-			// TODO: Unify the software renderer matrix behavior?
-			if (graphics.__owner.__drawableType == TEXT_FIELD #if (openfl_disable_hdpi || openfl_disable_hdpi_graphics) || true #end)
-			{
-				renderer.__softwareRenderer.__worldTransform = Matrix.__identity;
-			}
-			else
-			{
-				renderer.__softwareRenderer.__worldTransform = renderer.__worldTransform;
-			}
+			renderer.__softwareRenderer.__worldTransform = renderer.__worldTransform;
 
 			#if (js && html5)
 			CanvasGraphics.render(graphics, cast renderer.__softwareRenderer);
@@ -506,14 +493,7 @@ class Context3DGraphics
 		else
 		{
 			graphics.__bitmap = null;
-
-			#if (openfl_disable_hdpi || openfl_disable_hdpi_graphics)
-			var pixelRatio = 1;
-			#else
-			var pixelRatio = renderer.__pixelRatio;
-			#end
-
-			graphics.__update(renderer.__worldTransform, pixelRatio);
+			graphics.__update(renderer.__worldTransform);
 
 			var bounds = graphics.__bounds;
 
@@ -535,8 +515,8 @@ class Context3DGraphics
 
 				var matrix = Matrix.__pool.get();
 
-				var shaderBuffer:ShaderBuffer = null;
-				var bitmap:BitmapData = null;
+				var shaderBuffer = null;
+				var bitmap = null;
 				var repeat = false;
 				var smooth = false;
 				var fill:Null<Int> = null;
@@ -605,7 +585,7 @@ class Context3DGraphics
 								var length = hasIndices ? indices.length : Math.floor(rects.length / 4);
 
 								var uMatrix = renderer.__getMatrix(graphics.__owner.__renderTransform, AUTO);
-								var shader:Shader;
+								var shader;
 
 								if (shaderBuffer != null && !maskRender)
 								{
@@ -728,7 +708,7 @@ class Context3DGraphics
 							var bufferPosition = hasUVTData ? vertexBufferPositionUVT : vertexBufferPosition;
 
 							var uMatrix = renderer.__getMatrix(graphics.__owner.__renderTransform, AUTO);
-							var shader:Shader;
+							var shader;
 
 							if (shaderBuffer != null && !maskRender)
 							{
@@ -897,7 +877,7 @@ class Context3DGraphics
 	private static function resizeVertexBuffer(graphics:Graphics, hasUVTData:Bool, length:Int):Void
 	{
 		var buffer = (hasUVTData ? graphics.__vertexBufferDataUVT : graphics.__vertexBufferData);
-		var newBuffer:Float32Array = null;
+		var newBuffer = null;
 
 		#if lime
 		if (buffer == null)
@@ -917,4 +897,3 @@ class Context3DGraphics
 		}
 	}
 }
-#end

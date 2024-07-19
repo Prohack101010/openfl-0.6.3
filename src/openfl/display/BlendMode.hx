@@ -12,8 +12,7 @@ package openfl.display;
 	*  The `blendMode` parameter of the `draw()`
 	method of the openfl.display.BitmapData class
 **/
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract BlendMode(Null<Int>)
-
+@:enum abstract BlendMode(Null<Int>)
 {
 	/**
 		Adds the values of the constituent colors of the display object to the
@@ -236,8 +235,7 @@ package openfl.display;
 }
 #else
 @SuppressWarnings("checkstyle:FieldDocComment")
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract BlendMode(String) from String to String
-
+@:enum abstract BlendMode(String) from String to String
 {
 	public var ADD = "add";
 	public var ALPHA = "alpha";

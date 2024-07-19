@@ -1,6 +1,5 @@
 package openfl.display._internal;
 
-#if !flash
 import openfl.utils._internal.Float32Array;
 import openfl.display.BitmapData;
 import openfl.display.BlendMode;
@@ -563,7 +562,7 @@ class Context3DTilemap
 		// gl.vertexAttribPointer (shader.openfl_Position.index, 2, gl.FLOAT, false, 25 * Float32Array.BYTES_PER_ELEMENT, 0);
 		// gl.vertexAttribPointer (shader.openfl_TextureCoord.index, 2, gl.FLOAT, false, 25 * Float32Array.BYTES_PER_ELEMENT, 2 * Float32Array.BYTES_PER_ELEMENT);
 
-		// var cacheBitmapData:BitmapData = null;
+		// var cacheBitmapData = null;
 		// var lastIndex = 0;
 		// var skipped = tileArray.__bufferSkipped;
 		// var drawCount = tileArray.__length;
@@ -641,4 +640,3 @@ class Context3DTilemap
 		vertexBufferData = tilemap.__buffer.vertexBufferData;
 	}
 }
-#end

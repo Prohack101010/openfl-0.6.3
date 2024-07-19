@@ -17,7 +17,6 @@ class ShaderFilterTest extends Test
 	public function setupClass():Void
 	{
 		#if flash
-		#if format
 		var pbj:PBJ = {
 			version: 1,
 			name: "Multiply",
@@ -44,15 +43,11 @@ class ShaderFilterTest extends Test
 		writer.write(pbj);
 
 		_shader = new Shader(output.getBytes());
-		#end
 		#else
 		_shader = new Shader();
 		#end
 	}
 
-	#if (flash && !format)
-	@Ignored
-	#end
 	public function test_new_()
 	{
 		// TODO: Confirm functionality
@@ -61,9 +56,6 @@ class ShaderFilterTest extends Test
 		Assert.notNull(shaderFilter);
 	}
 
-	#if (flash && !format)
-	@Ignored
-	#end
 	public function test_shader()
 	{
 		// TODO: Confirm functionality

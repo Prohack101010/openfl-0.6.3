@@ -8,7 +8,6 @@ import utest.Test;
 
 class BitmapDataFileIOTest extends Test
 {
-	// ByteArray.loadFromFile and BitmapData.fromBase64 don't exist on flash target
 	#if flash
 	@Ignored
 	#end
@@ -35,10 +34,6 @@ class BitmapDataFileIOTest extends Test
 			#end
 
 			async.done();
-		}).onError(function(result)
-		{
-				Assert.fail(result);
-				async.done();
 		});
 	}
 

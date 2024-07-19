@@ -43,7 +43,7 @@ import openfl.geom.Rectangle;
 								  `click` event still occurs.
 	@event contextMenu            Dispatched when a user gesture triggers the
 								  context menu associated with this interactive
-								  object in an OpenFL application.
+								  object in an AIR application.
 	@event copy                   Dispatched when the user activates the
 								  platform-specific accelerator key combination
 								  for a copy operation or selects 'Copy' from
@@ -1255,7 +1255,7 @@ class InteractiveObject extends DisplayObject
 
 	@:noCompletion private function __allowMouseFocus():Bool
 	{
-		return mouseEnabled && tabEnabled;
+		return tabEnabled;
 	}
 
 	@:noCompletion private override function __getInteractive(stack:Array<DisplayObject>):Bool

@@ -7,9 +7,6 @@ import utest.Test;
 
 class ShaderDataTest extends Test
 {
-	#if flash
-	@Ignored
-	#end
 	public function test_new_()
 	{
 		// TODO: Confirm functionality

@@ -1,6 +1,5 @@
 package openfl.text._internal;
 
-#if !flash
 import haxe.io.Bytes;
 #if lime
 import lime.math.Vector2;
@@ -52,7 +51,7 @@ class TextLayout
 	public var autoHint:Bool;
 	public var direction(get, set):TextDirection;
 	public var font(default, set):Font;
-	@SuppressWarnings("checkstyle:Dynamic") public var glyphs(get, null):Array< #if lime Glyph #else Dynamic #end>;
+	@SuppressWarnings("checkstyle:Dynamic") public var glyphs(get, null):Array<#if lime Glyph #else Dynamic #end>;
 	public var language(get, set):String;
 	public var letterSpacing:Float = 0;
 	@:isVar public var positions(get, null):Array<GlyphPosition>;
@@ -120,10 +119,7 @@ class TextLayout
 
 				if (autoHint)
 				{
-					// TODO: Investigate FreeType hinting used in HB. The FT_LOAD_FORCE_AUTOHINT
-					// flag caused glyph spacing inconsistencies on certain fonts. Is it necessary to have
-					// enabled in certain cases?
-					__hbFont.loadFlags = /*FT_LOAD_FORCE_AUTOHINT |*/ FT_LOAD_TARGET_LIGHT;
+					__hbFont.loadFlags = FT_LOAD_FORCE_AUTOHINT | FT_LOAD_TARGET_LIGHT;
 				}
 			}
 			else
@@ -144,7 +140,7 @@ class TextLayout
 			__hbBuffer.script = script.toHBScript();
 			__hbBuffer.language = new HBLanguage(language);
 			__hbBuffer.clusterLevel = HBBufferClusterLevel.CHARACTERS;
-			#if (neko)
+			#if (neko || mac)
 			// other targets still uses dummy positions to make UTF8 work
 			// TODO: confirm
 			__hbBuffer.addUTF8(text, 0, -1);
@@ -225,9 +221,9 @@ class TextLayout
 
 	@:noCompletion
 	@SuppressWarnings("checkstyle:Dynamic")
-	private function get_glyphs():Array< #if lime Glyph #else Dynamic #end>
+	private function get_glyphs():Array<#if lime Glyph #else Dynamic #end>
 	{
-		var glyphs:Array< #if lime Glyph #else Dynamic #end> = [];
+		var glyphs = [];
 
 		for (position in positions)
 		{
@@ -287,8 +283,7 @@ class TextLayout
 }
 
 @SuppressWarnings("checkstyle:FieldDocComment")
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract TextDirection(Int) to Int
-
+@:enum abstract TextDirection(Int) to Int
 {
 	public var INVALID = 0;
 	public var LEFT_TO_RIGHT = 4;
@@ -353,8 +348,7 @@ class TextLayout
 }
 
 @SuppressWarnings("checkstyle:FieldDocComment")
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract TextScript(String) to (String)
-
+@:enum abstract TextScript(String) to(String)
 {
 	public var COMMON = "Zyyy";
 	public var INHERITED = "Zinh";
@@ -506,4 +500,3 @@ class TextLayout
 		}
 	}
 }
-#end

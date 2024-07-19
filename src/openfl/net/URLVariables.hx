@@ -95,23 +95,11 @@ abstract URLVariables(Dynamic) from Dynamic to Dynamic
 			}
 			else
 			{
-				result.push(StringTools.urlEncode(f) + "=" + StringTools.urlEncode(Std.string(value)));
+				result.push(StringTools.urlEncode(f) + "=" + StringTools.urlEncode(value));
 			}
 		}
 
 		return result.join("&");
-	}
-
-	@SuppressWarnings("checkstyle:FieldDocComment")
-	@:arrayAccess private inline function __get(key:String):Dynamic
-	{
-		return Reflect.field(this, key);
-	}
-
-	@SuppressWarnings("checkstyle:FieldDocComment")
-	@:arrayAccess private inline function __set(key:String, value:String):Void
-	{
-		Reflect.setField(this, key, value);
 	}
 }
 #else

@@ -756,14 +756,7 @@ class OpenGLRenderer extends DisplayObjectRenderer
 
 		if (__defaultRenderTarget == null)
 		{
-			if (__context3D.__backBufferWantsBestResolution)
-			{
-				__scissorRectangle.setTo(__offsetX / __pixelRatio, __offsetY / __pixelRatio, __displayWidth / __pixelRatio, __displayHeight / __pixelRatio);
-			}
-			else
-			{
-				__scissorRectangle.setTo(__offsetX, __offsetY, __displayWidth, __displayHeight);
-			}
+			__scissorRectangle.setTo(__offsetX, __offsetY, __displayWidth, __displayHeight);
 			__context3D.setScissorRectangle(__scissorRectangle);
 
 			__upscaled = (__worldTransform.a != 1 || __worldTransform.d != 1);
@@ -823,14 +816,7 @@ class OpenGLRenderer extends DisplayObjectRenderer
 		}
 		else
 		{
-			if (__context3D.__backBufferWantsBestResolution)
-			{
-				__scissorRectangle.setTo(__offsetX / __pixelRatio, __offsetY / __pixelRatio, __displayWidth / __pixelRatio, __displayHeight / __pixelRatio);
-			}
-			else
-			{
-				__scissorRectangle.setTo(__offsetX, __offsetY, __displayWidth, __displayHeight);
-			}
+			__scissorRectangle.setTo(__offsetX, __offsetY, __displayWidth, __displayHeight);
 			__context3D.setScissorRectangle(__scissorRectangle);
 			// __gl.viewport (__offsetX, __offsetY, __displayWidth, __displayHeight);
 
@@ -995,15 +981,6 @@ class OpenGLRenderer extends DisplayObjectRenderer
 			var y = Math.floor(clipRect.y);
 			var width = (clipRect.width > 0 ? Math.ceil(clipRect.right) - x : 0);
 			var height = (clipRect.height > 0 ? Math.ceil(clipRect.bottom) - y : 0);
-			#if !openfl_dpi_aware
-			if (__context3D.__backBufferWantsBestResolution)
-			{
-				x = Math.floor(clipRect.x / __pixelRatio);
-				y = Math.floor(clipRect.y / __pixelRatio);
-				width = (clipRect.width > 0 ? Math.ceil(clipRect.right / __pixelRatio) - x : 0);
-				height = (clipRect.height > 0 ? Math.ceil(clipRect.bottom / __pixelRatio) - y : 0);
-			}
-			#end
 
 			if (width < 0) width = 0;
 			if (height < 0) height = 0;
