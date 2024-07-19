@@ -421,7 +421,7 @@ class DisplayObjectRenderer extends EventDispatcher
 						if (textField.__cacheBitmap != null)
 						{
 							textField.__cacheBitmap.__renderTransform.tx -= textField.__offsetX * pixelRatio;
-							textField.__cacheBitmap.__renderTransform.ty -= textField.__offsetY * pixelRatio
+							textField.__cacheBitmap.__renderTransform.ty -= textField.__offsetY * pixelRatio;
 						}
 					}
 
